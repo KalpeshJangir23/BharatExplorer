@@ -1,5 +1,8 @@
 // Seat Selection Sheet
 import 'package:flutter/material.dart';
+import 'package:trip_show_planner/core/config/theme/appColor.dart';
+import 'package:trip_show_planner/screens/momument_display.dart/sub_sheets/04_seat_selector/widgets/seats.dart';
+import 'package:trip_show_planner/screens/momument_display.dart/sub_sheets/ticket/ticket.dart';
 
 class SeatSelectionSheet extends StatelessWidget {
   const SeatSelectionSheet({super.key});
@@ -8,23 +11,14 @@ class SeatSelectionSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints.expand(
-          height: MediaQuery.of(context).size.height * 0.45),
+          height: MediaQuery.of(context).size.height * 0.75),
       padding: const EdgeInsets.all(16.0),
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: Appcolor.darkBackground,
         borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
       ),
       child: Column(
         children: [
-          Container(
-            width: 50,
-            height: 5,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-          const SizedBox(height: 20),
           const Text(
             'Select Seats',
             style: TextStyle(
@@ -33,13 +27,20 @@ class SeatSelectionSheet extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
+
+          const TheaterSeating(),
+          const SizedBox(height: 20),
           // Add your seat selection content here
           const Spacer(),
           ElevatedButton(
             onPressed: () {
               // Close all bottom sheets and proceed to confirmation
-              Navigator.of(context).popUntil((route) => route.isFirst);
-              // Add your booking confirmation logic here
+
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) => const ConfirmationScreen(),
+              ); // Add your booking confirmation logic here
             },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(double.infinity, 50),

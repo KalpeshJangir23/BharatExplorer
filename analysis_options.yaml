@@ -11,6 +11,7 @@ analyzer:
   errors:
     constant_identifier_names: ignore
     file_names: ignore
+    non_constant_identifier_names: ignore
 include: package:flutter_lints/flutter.yaml
 
 linter:

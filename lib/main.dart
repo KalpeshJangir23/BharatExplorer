@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trip_show_planner/core/config/theme/appTheme.dart';
 import 'package:trip_show_planner/screens/momument_display.dart/booking.dart';
 
 void main() {
@@ -12,10 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Trip Show Planner',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.darkTheme,
       home: const BookingPage(),
     );
   }

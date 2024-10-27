@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trip_show_planner/core/config/assets/appImages.dart';
-import 'package:trip_show_planner/screens/momument_display.dart/widgets/01_find_location.dart';
+import 'package:trip_show_planner/screens/momument_display.dart/sub_sheets/01_find_location.dart';
 
 class BookingPage extends StatefulWidget {
   const BookingPage({super.key});
@@ -78,7 +78,7 @@ class _BookingPageState extends State<BookingPage> {
                         color: Colors.white,
                         height: 1.5,
                         shadows: [
-                          Shadow(
+                          Shadow( 
                             blurRadius: 4.0,
                             color: Colors.black45,
                             offset: Offset(1.0, 1.0),
