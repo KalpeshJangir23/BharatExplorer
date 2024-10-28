@@ -26,21 +26,27 @@ class _ImageWithDescriptionCardState extends State<ImageWithDescriptionCard> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4,
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Image Section
-          Image.asset(
-            widget.imageUrl,
-            fit: BoxFit.cover,
-            height: 200,
-            width: double.infinity,
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+            child: Image.asset(
+              widget.imageUrl,
+              fit: BoxFit.cover,
+              height: 180,
+              width: double.infinity,
+            ),
           ),
 
           // Actions Row (Like Button)
           Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 12.0),
             child: Row(
               children: [
                 InkWell(
@@ -49,7 +55,6 @@ class _ImageWithDescriptionCardState extends State<ImageWithDescriptionCard> {
                       isLiked = !isLiked;
                     });
                     widget.onLike();
-                    
                   },
                   child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
@@ -73,7 +78,7 @@ class _ImageWithDescriptionCardState extends State<ImageWithDescriptionCard> {
 
           // Description Section
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -81,7 +86,9 @@ class _ImageWithDescriptionCardState extends State<ImageWithDescriptionCard> {
                   builder: (context, constraints) {
                     final TextSpan textSpan = TextSpan(
                       text: widget.description,
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            height: 1.5, // Adjust line height
+                          ),
                     );
                     final TextPainter textPainter = TextPainter(
                       text: textSpan,
@@ -98,7 +105,9 @@ class _ImageWithDescriptionCardState extends State<ImageWithDescriptionCard> {
                           widget.description,
                           maxLines: isExpanded ? null : maxLines,
                           overflow: isExpanded ? null : TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                height: 1.5, // Adjust line height
+                              ),
                         ),
                         if (isTextOverflowing)
                           GestureDetector(
@@ -108,7 +117,7 @@ class _ImageWithDescriptionCardState extends State<ImageWithDescriptionCard> {
                               });
                             },
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
+                              padding: const EdgeInsets.only(top: 8.0),
                               child: Text(
                                 isExpanded ? 'Show less' : 'Show more',
                                 style: TextStyle(

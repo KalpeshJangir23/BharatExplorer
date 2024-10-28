@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:trip_show_planner/core/config/assets/vector_images.dart';
 import 'package:trip_show_planner/core/config/theme/appColor.dart';
 import 'package:trip_show_planner/screens/login/email_screen.dart';

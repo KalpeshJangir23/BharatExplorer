@@ -1,4 +1,3 @@
-// Seat Selection Sheet
 import 'package:flutter/material.dart';
 import 'package:trip_show_planner/core/config/theme/appColor.dart';
 import 'package:trip_show_planner/screens/momument_display.dart/sub_sheets/04_seat_selector/widgets/seats.dart';
@@ -9,47 +8,103 @@ class SeatSelectionSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints.expand(
-          height: MediaQuery.of(context).size.height * 0.75),
-      decoration: const BoxDecoration(
-        color: Appcolor.darkBackground,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-      ),
-      child: Column(
-        children: [
-          const Text(
-            'Select Seats',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 20),
+    // Get screen dimensions
+    final screenSize = MediaQuery.of(context).size;
+    final screenHeight = screenSize.height;
+    final screenWidth = screenSize.width;
+    final padding = MediaQuery.of(context).padding;
 
-          const TheaterSeating(),
-          const SizedBox(height: 20),
-          // Add your seat selection content here
-          const Spacer(),
-          ElevatedButton(
-            onPressed: () {
-              // Close all bottom sheets and proceed to confirmation
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (context) => const ConfirmationScreen(),
-              ); // Add your booking confirmation logic here
-            },
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(double.infinity, 50),
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40))),
+    // Calculate dynamic heights
+    final sheetHeight = screenHeight * 0.75;
+    final titleHeight = screenHeight * 0.05;
+    final buttonHeight = screenHeight * 0.07;
+
+    // Calculate dynamic spacing
+    final verticalSpacing = screenHeight * 0.02;
+
+    return Container(
+      constraints: BoxConstraints.expand(height: sheetHeight),
+      decoration: BoxDecoration(
+        color: Appcolor.darkBackground,
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(screenWidth * 0.1), // Responsive border radius
+        ),
+      ),
+      child: SafeArea(
+        child: Column(
+          children: [
+            // Draggable handle
+            Container(
+              margin: EdgeInsets.symmetric(
+                vertical: verticalSpacing,
+                horizontal: screenWidth * 0.4,
+              ),
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
-            child: const Text('Confirm Booking' , style: TextStyle(color: Appcolor.white),),
-          ),
-        ],
+
+            // Title
+            Container(
+              height: titleHeight,
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  'Select Seats',
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.06,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+
+            SizedBox(height: verticalSpacing),
+
+            // Theater seating area
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                  child: const TheaterSeating(),
+                ),
+              ),
+            ),
+
+            SizedBox(height: verticalSpacing),
+
+            // Bottom button
+            ElevatedButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) => const ConfirmationScreen(),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(screenWidth * 0.9, buttonHeight),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(screenWidth * 0.1),
+                      topRight: Radius.circular(screenWidth * 0.1),
+                    ),
+                  ),
+                ),
+                child: Text(
+                  'Confirm Booking',
+                  style: TextStyle(
+                    color: Appcolor.white,
+                    fontSize: screenWidth * 0.04,
+                  ),
+                ),
+              ),
+            
+          ],
+        ),
       ),
     );
   }

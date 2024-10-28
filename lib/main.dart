@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trip_show_planner/core/config/theme/appTheme.dart';
-import 'package:trip_show_planner/screens/HomeScreen/homeScreen.dart';
-import 'package:trip_show_planner/screens/bottom_nav.dart';
 import 'package:trip_show_planner/screens/enter_splash_Screen/spash.dart';
 
 void main() {
@@ -16,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Trip Show Planner',
+      debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
       home: const SplashScreen(),
     );

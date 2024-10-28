@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trip_show_planner/core/config/assets/vector_images.dart';
+import 'package:trip_show_planner/core/config/theme/appColor.dart';
 import 'package:trip_show_planner/provider/user_provider.dart';
 import 'package:trip_show_planner/screens/bottom_nav.dart';
 
@@ -25,8 +25,10 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
   bool _passwordVisible = false;
   @override
   void initState() {
-    _passwordVisible = false;
+    super.initState();
+     _passwordVisible = false;
   }
+ 
 
   void _onNextPressed() {
     Navigator.of(context).push(MaterialPageRoute(
@@ -77,7 +79,7 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
                   icon: Icon(
                     // Based on passwordVisible state choose the icon
                     _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                    color: Theme.of(context).primaryColorDark,
+                    color: Appcolor.white,
                   ),
                   onPressed: () {
                     // Update the state i.e. toogle the state of passwordVisible variable

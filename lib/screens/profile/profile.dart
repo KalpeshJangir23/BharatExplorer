@@ -34,8 +34,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userState = ref.watch(userProvider);
-
     return SafeArea(
       child: Scaffold(
         // appBar: AppBar(
@@ -52,7 +50,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         //             ref
         //                 .read(userProvider.notifier)
         //                 .updatePassword(_passwordController.text);
-      
+
         //           }
         //         }
         //         setState(() {
@@ -122,7 +120,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           ref
                               .read(userProvider.notifier)
                               .updatePassword(_passwordController.text);
-      
+
                           setState(() {
                             _isEditing = false;
                           });
@@ -136,7 +134,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                   ),
                 ],
-      SizedBox(height: 30,),
+                const SizedBox(
+                  height: 30,
+                ),
                 Center(
                   child: ElevatedButton(
                       onPressed: () {

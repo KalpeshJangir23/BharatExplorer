@@ -3,7 +3,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trip_show_planner/core/config/theme/appColor.dart';
 import 'package:trip_show_planner/provider/booking_provider.dart';
-import 'package:trip_show_planner/provider/list_distination_provider.dart';
 import 'package:trip_show_planner/screens/momument_display.dart/sub_sheets/04_seat_selector/04_seat_selection.dart';
 
 class TravellerSelectionSheet extends ConsumerStatefulWidget {
@@ -106,7 +105,7 @@ class _TravellerSelectionSheetState
       ),
       child: Column(
         children: [
-          SizedBox(height: 30,),
+          const SizedBox(height: 30,),
           _buildNumberCarousel(
             numbers: List.generate(13, (i) => i + 1),
             selectedNumber: numberOfAdults,

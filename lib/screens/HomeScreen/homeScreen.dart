@@ -24,12 +24,11 @@ class _Home extends ConsumerState<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       body: SafeArea(
         child: SingleChildScrollView(
           // Wrap with SingleChildScrollView
           child: SizedBox(
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height *1.1,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
