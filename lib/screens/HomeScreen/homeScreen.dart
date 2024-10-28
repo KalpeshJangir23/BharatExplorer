@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:trip_show_planner/core/config/assets/appImages.dart';
 import 'package:trip_show_planner/provider/booking_provider.dart';
 import 'package:trip_show_planner/provider/list_distination_provider.dart';
 import 'package:trip_show_planner/provider/ticket_provider.dart';
 import 'package:trip_show_planner/screens/HomeScreen/widgets/adventure/beach.dart';
+import 'package:trip_show_planner/screens/HomeScreen/widgets/adventure/desert.dart';
+import 'package:trip_show_planner/screens/HomeScreen/widgets/adventure/forest.dart';
+import 'package:trip_show_planner/screens/HomeScreen/widgets/adventure/mountain.dart';
 import 'package:trip_show_planner/screens/HomeScreen/widgets/adventure_Container.dart';
 import 'package:trip_show_planner/screens/momument_display.dart/booking.dart';
 import 'package:trip_show_planner/screens/momument_display.dart/sub_sheets/ticket/ticket.dart';
@@ -147,34 +151,34 @@ class _Home extends ConsumerState<Home> {
           name: 'Beach',
           onTap: () {
             val.push(MaterialPageRoute(
-              builder: (context) => const Beach(title: 'Beach'),
+              builder: (context) => const BeachScreen(title: 'Beach'),
             ));
           },
-          imageUrl: 'assets/images/desert.jpg'),
+          imageUrl: Appimages.beach),
       BlurImageContainer(
           name: 'Mountain',
           onTap: () {
             val.push(MaterialPageRoute(
-              builder: (context) => const Beach(title: 'Beach'),
+              builder: (context) => const MountainScreen(title: 'Mountain'),
             ));
           },
-          imageUrl: 'assets/images/desert.jpg'),
+          imageUrl:Appimages.mountain),
       BlurImageContainer(
           name: 'Forest',
           onTap: () {
             val.push(MaterialPageRoute(
-              builder: (context) => const Beach(title: 'Beach'),
+              builder: (context) => const ForestScreen(title: 'Forest'),
             ));
           },
-          imageUrl: 'assets/images/desert.jpg'),
+          imageUrl: Appimages.forest),
       BlurImageContainer(
           name: 'Desert',
           onTap: () {
             val.push(MaterialPageRoute(
-              builder: (context) => const Beach(title: 'Beach'),
+              builder: (context) => const Desert(title: 'Desert'),
             ));
           },
-          imageUrl: 'assets/images/desert.jpg'),
+          imageUrl: Appimages.desert ),
     ];
 
     return Padding(

@@ -161,14 +161,14 @@ class _DateSelectionSheetState extends ConsumerState<DateSelectionSheet> {
             children: [
               if (!isFormValid)
                 const Text(
-                  'Please select both date range and time slot to continue',
+                  '',
                   style: TextStyle(
                     color: Colors.red,
                     fontSize: 12,
                   ),
                   textAlign: TextAlign.center,
                 ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
               ElevatedButton(
                 onPressed: isFormValid
                     ? () {

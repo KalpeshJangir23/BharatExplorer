@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:trip_show_planner/core/config/assets/appImages.dart';
 import 'package:trip_show_planner/screens/HomeScreen/widgets/distinationCard.dart';
 
 // Define a provider for a list of DestinationCard objects
@@ -13,21 +14,30 @@ final destinationListProvider = Provider<List<DestinationCard>>((ref) {
       title: 'Taj Mahal',
       city: "Agra",
       price: '18k',
-      imagePath: 'assets/images/taj_mahal.jpg',
+      imagePath: Appimages.tajMahal,
     ),
     const DestinationCard(
-      discription: "Jaipur is known as pink City ",
+      discription:
+          'Jaipur, the capital of Rajasthan, is famous for its distinctive pink-colored architecture, earning it the nickname "Pink City." \n\n'
+          'Founded in 1727 by Maharaja Sawai Jai Singh II, Jaipur is known for its rich history, vibrant culture, and stunning palaces.\n\n'
+          'Key attractions include the Hawa Mahal, City Palace, and Amber Fort, making it a popular destination for tourists seeking to explore Rajasthan\'s heritage.\n\n'
+          'Jaipur is also part of India\'s Golden Triangle tourist circuit, attracting millions of visitors each year.',
       title: 'Jaipur',
-      city: 'Raj',
+      city: 'Rajasthan',
       price: '₹32k',
-      imagePath: 'assets/images/taj_mahal.jpg',
+      imagePath: Appimages.jaipur, // Update the image path as needed
     ),
     const DestinationCard(
-      discription: 'it has 4 pillar',
+      discription:
+          'The Char Minar is a historic monument located in Hyderabad, India, built in 1591. \n\n'
+          'It is recognized for its four grand arches and intricate architecture, symbolizing the city\'s rich cultural heritage.\n\n'
+          'Originally constructed to commemorate the end of a deadly plague, the Char Minar has become an iconic landmark and a center for bustling bazaars.\n\n'
+          'Visitors can explore the vibrant streets surrounding the monument, offering a glimpse into the local lifestyle and history.',
       title: 'Char Minar',
-      city: "HYD",
+      city: 'Hyderabad',
       price: '₹12k',
-      imagePath: 'assets/images/taj_mahal.jpg',
+      imagePath:
+         Appimages.charMinar, // Update the image path as needed
     ),
   ];
 });

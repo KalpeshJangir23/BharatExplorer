@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trip_show_planner/core/config/common/appbar.dart';
+import 'package:trip_show_planner/core/config/theme/appColor.dart';
 import 'package:trip_show_planner/screens/momument_display.dart/sub_sheets/01_find_location.dart';
 
 class BookingPage extends StatefulWidget {
@@ -109,6 +110,9 @@ class _BookingPageState extends State<BookingPage>
                 fit: BoxFit.cover,
               ),
             ),
+          ),
+          Container(
+            color: Colors.black.withOpacity(0.25),
           ),
           // Animated Content
           const BasicAppbar(),
@@ -223,7 +227,7 @@ class _BookingPageState extends State<BookingPage>
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue.shade600,
+                              backgroundColor: Appcolor.primary,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(
                                 vertical: 20,
