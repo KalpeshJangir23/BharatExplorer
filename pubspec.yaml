@@ -43,6 +43,8 @@ dependencies:
   flutter_riverpod: ^2.6.1
   ticket_clippers: ^0.0.8
   floating_bottom_navigation_bar: ^1.5.2
+  geolocator: ^13.0.1
+  geocoding: ^3.0.0
 
 dev_dependencies:
   flutter_test:

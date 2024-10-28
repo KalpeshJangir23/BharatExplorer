@@ -3,9 +3,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trip_show_planner/provider/booking_provider.dart';
 import 'package:trip_show_planner/provider/list_distination_provider.dart';
+import 'package:trip_show_planner/provider/ticket_provider.dart';
 import 'package:trip_show_planner/screens/HomeScreen/widgets/adventure/beach.dart';
 import 'package:trip_show_planner/screens/HomeScreen/widgets/adventure_Container.dart';
 import 'package:trip_show_planner/screens/momument_display.dart/booking.dart';
+import 'package:trip_show_planner/screens/momument_display.dart/sub_sheets/ticket/ticket.dart';
 
 class Home extends ConsumerStatefulWidget {
   const Home({super.key});
@@ -41,6 +43,8 @@ class _Home extends ConsumerState<Home> {
   }
 
   Widget _buildHeader() {
+    final hasTicketNotification = ref.watch(ticketNotificationProvider);
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -54,9 +58,43 @@ class _Home extends ConsumerState<Home> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          CircleAvatar(
-            backgroundColor: Colors.grey[800],
-            child: const Icon(Icons.person, color: Colors.white),
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  // Clear the notification and navigate to the Ticket Page
+                  ref
+                      .read(ticketNotificationProvider.notifier)
+                      .clearNotification();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ConfirmationScreen()),
+                  );
+                },
+                child: Stack(
+                  children: [
+                    const Icon(Icons.notifications),
+                    if (hasTicketNotification) // Show red dot if there's a new ticket
+                      const Positioned(
+                        right: 0,
+                        top: 0,
+                        child: CircleAvatar(
+                          radius: 6,
+                          backgroundColor: Colors.red,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              CircleAvatar(
+                backgroundColor: Colors.grey[800],
+                child: const Icon(Icons.person, color: Colors.white),
+              ),
+            ],
           ),
         ],
       ),

@@ -1,6 +1,4 @@
-// Date Selection Sheet
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -27,62 +25,79 @@ class _DateSelectionSheetState extends ConsumerState<DateSelectionSheet> {
     '8:00 PM',
   ];
   int selectedTimeIndex = -1;
+  bool isDateRangeSelected = false;
+
+  bool get isFormValid => selectedTimeIndex != -1 && isDateRangeSelected;
+
   @override
   Widget build(BuildContext context) {
-    final dateRangeState = ref.watch(bookingProvider);
+    final name = ref.watch(bookingProvider);
     return Container(
       constraints: BoxConstraints.expand(
           height: MediaQuery.of(context).size.height * 0.95),
-      padding: const EdgeInsets.all(16.0),
       decoration: const BoxDecoration(
-        color: Appcolor.secondary,
+        color: Appcolor.darkBackground,
         borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
       ),
       child: Column(
         children: [
-          Container(
-            width: 50,
-            height: 5,
-            decoration: BoxDecoration(
-              color: Appcolor.secondary,
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
           const SizedBox(height: 20),
-          const Text(
-            'Select Date',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
           CurrentlocationDestination(
-            current_city:
-                "Mumbai", //TODO : ADD RIVERPOD STATE FOR CURRENT LOCATION
-            current_location: "Vasai",
+            current_city: name.currentLocation ?? 'Mumbai',
+            current_location: name.currentArea ?? "Maharashtra",
             distination_city:
                 ref.watch(destinationListProvider)[widget.index].title,
             distination_location:
                 ref.watch(destinationListProvider)[widget.index].city,
           ),
-          const SizedBox(height: 20),
-          Calendar(
-            onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-              if (args.value is PickerDateRange) {
-                final PickerDateRange selectedRange = args.value;
-                if (selectedRange.startDate != null) {
-                  ref.read(bookingProvider.notifier).updateDates(
-                        startDate: selectedRange.startDate,
-                        endDate: selectedRange.endDate,
-                      );
-                }
-              }
-            },
+          const SizedBox(height: 10),
+          Divider(
+            thickness: 2,
+            color: Appcolor.GREY_COLOR.withOpacity(0.2),
           ),
-
-          const SizedBox(height: 20),
+          const Text(
+            'Trip Calender',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
           SizedBox(
-            height: 60, // Fixed height for the ListView
+            height: 380,
+            child: Calendar(
+              onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+                if (args.value is PickerDateRange) {
+                  final PickerDateRange selectedRange = args.value;
+                  if (selectedRange.startDate != null) {
+                    setState(() {
+                      isDateRangeSelected = true;
+                    });
+                    ref.read(bookingProvider.notifier).updateDates(
+                          startDate: selectedRange.startDate,
+                          endDate: selectedRange.endDate,
+                        );
+                  } else {
+                    setState(() {
+                      isDateRangeSelected = false;
+                    });
+                  }
+                }
+              },
+            ),
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            'Departure Time',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            height: 50,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: timeSlots.length,
@@ -112,11 +127,11 @@ class _DateSelectionSheetState extends ConsumerState<DateSelectionSheet> {
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? Appcolor.primary
-                                : Colors.transparent,
+                                : Appcolor.secondary,
                             border: Border.all(
                               color: isSelected
                                   ? Appcolor.primary
-                                  : Colors.grey.withOpacity(0.3),
+                                  : Appcolor.GREY_COLOR.withOpacity(0.3),
                               width: 1,
                             ),
                             borderRadius: BorderRadius.circular(12),
@@ -141,29 +156,50 @@ class _DateSelectionSheetState extends ConsumerState<DateSelectionSheet> {
               },
             ),
           ),
-          const SizedBox(height: 20),
-          // Add your date picker content here
           const Spacer(),
-          ElevatedButton(
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (context) => const TravellerSelectionSheet(),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(double.infinity, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
+          Column(
+            children: [
+              if (!isFormValid)
+                const Text(
+                  'Please select both date range and time slot to continue',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 12,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: isFormValid
+                    ? () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (context) => TravellerSelectionSheet(
+                            index: widget.index,
+                          ),
+                        );
+                      }
+                    : null,
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  minimumSize: const Size(double.infinity, 60),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40),
+                          topRight: Radius.circular(40))),
+                  backgroundColor:
+                      isFormValid ? Appcolor.primary : Appcolor.secondary,
+                ),
+                child: Text(
+                  'Continue to Traveller Selection',
+                  style: TextStyle(
+                    color: isFormValid ? Appcolor.white : Colors.white54,
+                  ),
+                ),
               ),
-            ),
-            child: const Text(
-              'Continue to Traveller Selection',
-              style: TextStyle(color: Appcolor.white),
-            ),
+            ],
           ),
-          const SizedBox(height: 20),
         ],
       ),
     );

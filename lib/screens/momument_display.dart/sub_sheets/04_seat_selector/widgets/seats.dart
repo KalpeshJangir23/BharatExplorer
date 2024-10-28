@@ -11,21 +11,15 @@ class TheaterSeating extends ConsumerStatefulWidget {
 }
 
 class _TheaterSeatingState extends ConsumerState<TheaterSeating> {
-  // Set to store selected seats
   final Set<String> selectedSeats = {};
+  final Set<String> bookedSeats = {'L1-1', 'L1-2', 'R2-1', 'R2-2'};
+  final Set<String> disabledSeats = {'L9-1', 'L9-2', 'R9-1', 'R9-2', 'R9-3'};
 
-  // Predefined set of booked seats
-  final Set<String> bookedSeats = {'D1', 'D2', 'A6', 'A7'};
-
-  // Predefined set of disabled seats
-  final Set<String> disabledSeats = {'F1', 'F2', 'F3', 'F4', 'E1', 'E2'};
-
-  // Generate seat ID
-  String getSeatId(int row, int col) {
-    return '${String.fromCharCode(65 + row)}${col + 1}';
+  // Generate seat ID with section prefix (L for left, R for right)
+  String getSeatId(String section, int row, int col) {
+    return '$section$row-$col';
   }
 
-  // Check seat status
   String getSeatStatus(String seatId) {
     if (selectedSeats.contains(seatId)) return 'selected';
     if (bookedSeats.contains(seatId)) return 'booked';
@@ -33,7 +27,6 @@ class _TheaterSeatingState extends ConsumerState<TheaterSeating> {
     return 'available';
   }
 
-  // Handle seat selection
   void onSeatTap(String seatId, int seatLimit, WidgetRef ref) {
     if (bookedSeats.contains(seatId) || disabledSeats.contains(seatId)) return;
 
@@ -44,69 +37,79 @@ class _TheaterSeatingState extends ConsumerState<TheaterSeating> {
         selectedSeats.add(seatId);
       }
 
-      // Convert selectedSeats to a comma-separated string
       String selectedSeatsString = selectedSeats.join(',');
-
-      // Update the provider with the selected seats string
       ref
           .read(bookingProvider.notifier)
           .updateSeatSelection(selectedSeatsString);
     });
   }
 
+  Widget buildSeatSection(String section, int rows, int cols, int seatLimit) {
+    return Column(
+      children: List.generate(rows, (row) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Row(
+            children: List.generate(cols, (col) {
+              final seatId = getSeatId(section, row + 1, col + 1);
+              final status = getSeatStatus(seatId);
+
+              return GestureDetector(
+                onTap: () => onSeatTap(seatId, seatLimit, ref),
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
+                  child: SvgPicture.asset(
+                    'assets/vectors/svg_${status}_seat.svg',
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              );
+            }),
+          ),
+        );
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Watch the bookingProvider to get the seat limit
     final limit = ref.watch(bookingProvider);
     final seatLimit = (int.parse(limit.numberOfAdult ?? '1') +
         int.parse(limit.numberOfChild ?? '0'));
 
     return Column(
       children: [
-        // Theater curve SVG
         Container(
           width: double.infinity,
           height: 40,
           margin: const EdgeInsets.only(bottom: 20),
           child: SvgPicture.asset(
             'assets/vectors/theater_curve.svg',
-            fit: BoxFit.contain,
+            height: 20,
+            fit: BoxFit.fill,
           ),
         ),
-
-        // Seats layout
         Container(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            children: List.generate(9, (row) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(10, (col) {
-                    final seatId = getSeatId(row, col);
-                    final status = getSeatStatus(seatId);
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Left section (2x9)
+              buildSeatSection('L', 9, 2, seatLimit),
 
-                    return GestureDetector(
-                      onTap: () => onSeatTap(seatId, seatLimit, ref),
-                      child: Container(
-                        width: 30,
-                        height: 30,
-                        margin: const EdgeInsets.symmetric(horizontal: 2),
-                        child: SvgPicture.asset(
-                          'assets/vectors/svg_${status}_seat.svg',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-              );
-            }),
+              // Aisle
+              const SizedBox(width: 20),
+
+              // Right section (3x9)
+              buildSeatSection('R', 9, 3, seatLimit),
+              const SizedBox(width: 20),
+
+              buildSeatSection('K', 9, 2, seatLimit),
+            ],
           ),
         ),
-
-        // Legend
         Padding(
           padding: const EdgeInsets.all(16),
           child: Row(

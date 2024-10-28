@@ -17,6 +17,7 @@ class Calendar extends StatelessWidget {
     final theme = Theme.of(context);
 
     return SfDateRangePicker(
+    
       view: DateRangePickerView.month,
       headerStyle: DateRangePickerHeaderStyle(
         backgroundColor: Appcolor.primary,
@@ -25,7 +26,7 @@ class Calendar extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      backgroundColor: Appcolor.secondary,
+      backgroundColor: Appcolor.darkBackground,
       enablePastDates: false,
       minDate: tomorrow,
       monthCellStyle: const DateRangePickerMonthCellStyle(

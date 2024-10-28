@@ -6,43 +6,78 @@ class CurrentlocationDestination extends StatelessWidget {
   final String current_city;
   final String distination_location;
   final String distination_city;
-  const CurrentlocationDestination(
-      {super.key,
-      required this.current_location,
-      required this.current_city,
-      required this.distination_location,
-      required this.distination_city});
+
+  const CurrentlocationDestination({
+    super.key,
+    required this.current_location,
+    required this.current_city,
+    required this.distination_location,
+    required this.distination_city,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildLocationRow(
+            icon: Iconimages.current_location,
+            location: current_location,
+            subtitle: 'From $current_city',
+          ),
+          const SizedBox(height: 8),
+          _buildLocationRow(
+            icon: Iconimages.destination,
+            location: distination_location,
+            subtitle: 'To $distination_city',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLocationRow({
+    required String icon,
+    required String location,
+    required String subtitle,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Row(
-          children: [
-            Image.asset(
-              Iconimages.current_location,
-              height: 90,
-              width: 20,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text('$current_location\nFrom $current_city'),
-          ],
+        SizedBox(
+          width: 32,
+          height: 80,
+          child: Image.asset(
+            icon,
+            fit: BoxFit.contain,
+          ),
         ),
-        Row(
-          children: [
-            Image.asset(
-              Iconimages.destination,
-              height: 90,
-              width: 20,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text('$distination_location\nTo $distination_city'),
-          ],
-        )
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                location,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                subtitle,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

@@ -12,7 +12,6 @@ class SeatSelectionSheet extends StatelessWidget {
     return Container(
       constraints: BoxConstraints.expand(
           height: MediaQuery.of(context).size.height * 0.75),
-      padding: const EdgeInsets.all(16.0),
       decoration: const BoxDecoration(
         color: Appcolor.darkBackground,
         borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
@@ -43,13 +42,13 @@ class SeatSelectionSheet extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(double.infinity, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40))),
             ),
-            child: const Text('Confirm Booking'),
+            child: const Text('Confirm Booking' , style: TextStyle(color: Appcolor.white),),
           ),
-          const SizedBox(height: 20),
         ],
       ),
     );
