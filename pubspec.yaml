@@ -39,6 +39,10 @@ dependencies:
   carousel_slider: ^5.0.0
   book_my_seat: ^1.0.1
   qr_flutter: ^4.1.0
+  flutter_svg: ^1.1.6
+  flutter_riverpod: ^2.6.1
+  ticket_clippers: ^0.0.8
+  floating_bottom_navigation_bar: ^1.5.2
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trip_show_planner/core/config/theme/appTheme.dart';
-import 'package:trip_show_planner/screens/momument_display.dart/booking.dart';
+import 'package:trip_show_planner/screens/HomeScreen/homeScreen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Trip Show Planner',
       theme: AppTheme.darkTheme,
-      home: const BookingPage(),
+      home: const Home(),
     );
   }
 }

@@ -27,7 +27,7 @@ class CurrentlocationDestination extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            Text('$current_location\nFrom$current_city'),
+            Text('$current_location\nFrom $current_city'),
           ],
         ),
         Row(
@@ -40,7 +40,7 @@ class CurrentlocationDestination extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            Text('$distination_location\nTo$distination_city'),
+            Text('$distination_location\nTo $distination_city'),
           ],
         )
       ],

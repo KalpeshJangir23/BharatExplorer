@@ -4,7 +4,8 @@ import 'package:trip_show_planner/screens/momument_display.dart/sub_sheets/02_da
 
 // Main Location Bottom Sheet
 class LocationBottomSheet extends StatefulWidget {
-  const LocationBottomSheet({super.key});
+  final int index;
+  const LocationBottomSheet({super.key, required this.index});
 
   @override
   _LocationBottomSheetState createState() => _LocationBottomSheetState();
@@ -20,7 +21,9 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,
-        builder: (context) => DateSelectionSheet(),
+        builder: (context) => DateSelectionSheet(
+          index: widget.index,
+        ),
       );
     });
   }

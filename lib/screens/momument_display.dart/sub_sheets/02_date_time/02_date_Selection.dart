@@ -2,20 +2,24 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:trip_show_planner/core/config/theme/appColor.dart';
+import 'package:trip_show_planner/provider/booking_provider.dart';
+import 'package:trip_show_planner/provider/list_distination_provider.dart';
 import 'package:trip_show_planner/screens/momument_display.dart/sub_sheets/02_date_time/widgets/calender.dart';
 import 'package:trip_show_planner/screens/momument_display.dart/sub_sheets/02_date_time/widgets/currentLocation_destination.dart';
 import 'package:trip_show_planner/screens/momument_display.dart/sub_sheets/03_no_of_traveller/03_no_of_traveller.dart';
 
-class DateSelectionSheet extends StatefulWidget {
-  const DateSelectionSheet({super.key});
+class DateSelectionSheet extends ConsumerStatefulWidget {
+  final int index;
+  const DateSelectionSheet({super.key, required this.index});
 
   @override
-  State<DateSelectionSheet> createState() => _DateSelectionSheetState();
+  ConsumerState<DateSelectionSheet> createState() => _DateSelectionSheetState();
 }
 
-class _DateSelectionSheetState extends State<DateSelectionSheet> {
+class _DateSelectionSheetState extends ConsumerState<DateSelectionSheet> {
   final List<String> timeSlots = [
     '5:00 AM',
     '12:00 PM',
@@ -25,6 +29,7 @@ class _DateSelectionSheetState extends State<DateSelectionSheet> {
   int selectedTimeIndex = -1;
   @override
   Widget build(BuildContext context) {
+    final dateRangeState = ref.watch(bookingProvider);
     return Container(
       constraints: BoxConstraints.expand(
           height: MediaQuery.of(context).size.height * 0.95),
@@ -51,63 +56,25 @@ class _DateSelectionSheetState extends State<DateSelectionSheet> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const CurrentlocationDestination(
-            current_city: "Mumbai",
+          CurrentlocationDestination(
+            current_city:
+                "Mumbai", //TODO : ADD RIVERPOD STATE FOR CURRENT LOCATION
             current_location: "Vasai",
-            distination_city: "Agra",
-            distination_location: "Taj Mahal",
+            distination_city:
+                ref.watch(destinationListProvider)[widget.index].title,
+            distination_location:
+                ref.watch(destinationListProvider)[widget.index].city,
           ),
           const SizedBox(height: 20),
-          Calender(
-            funct: (DateRangePickerSelectionChangedArgs args) {
+          Calendar(
+            onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
               if (args.value is PickerDateRange) {
                 final PickerDateRange selectedRange = args.value;
-                final DateTime today = DateTime.now();
-                final DateTime todayWithoutTime =
-                    DateTime(today.year, today.month, today.day);
-
-                // Check if start date is selected and is today or before
                 if (selectedRange.startDate != null) {
-                  final DateTime startDate = DateTime(
-                    selectedRange.startDate!.year,
-                    selectedRange.startDate!.month,
-                    selectedRange.startDate!.day,
-                  );
-
-                  if (startDate.compareTo(todayWithoutTime) <= 0) {
-                    // Show dialog for invalid selection
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text(
-                            'Invalid Date Selection',
-                            style: TextStyle(
-                              fontFamily: "bold",
-                              fontSize: 18,
-                            ),
-                          ),
-                          content: const Text(
-                            'Please select a start date from tomorrow onwards.',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: const Text(
-                                'OK',
-                                style: TextStyle(
-                                  color: Appcolor.primary,
-                                  fontFamily: "bold",
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                    return;
-                  }
+                  ref.read(bookingProvider.notifier).updateDates(
+                        startDate: selectedRange.startDate,
+                        endDate: selectedRange.endDate,
+                      );
                 }
               }
             },
@@ -129,6 +96,9 @@ class _DateSelectionSheetState extends State<DateSelectionSheet> {
                       setState(() {
                         selectedTimeIndex = index;
                       });
+                      ref
+                          .read(bookingProvider.notifier)
+                          .updateStartTime(timeSlots[index]);
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
@@ -156,7 +126,7 @@ class _DateSelectionSheetState extends State<DateSelectionSheet> {
                               timeSlots[index],
                               style: TextStyle(
                                 fontSize: 16,
-                                color: isSelected ? Colors.white : Colors.black,
+                                color: Colors.white,
                                 fontWeight: isSelected
                                     ? FontWeight.bold
                                     : FontWeight.normal,

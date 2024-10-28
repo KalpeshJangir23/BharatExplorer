@@ -35,7 +35,6 @@ class SeatSelectionSheet extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               // Close all bottom sheets and proceed to confirmation
-
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,

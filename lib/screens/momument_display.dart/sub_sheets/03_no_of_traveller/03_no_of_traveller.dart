@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trip_show_planner/core/config/theme/appColor.dart';
+import 'package:trip_show_planner/provider/booking_provider.dart';
 import 'package:trip_show_planner/screens/momument_display.dart/sub_sheets/04_seat_selector/04_seat_selection.dart';
 
-class TravellerSelectionSheet extends StatefulWidget {
+class TravellerSelectionSheet extends ConsumerStatefulWidget {
   const TravellerSelectionSheet({super.key});
 
   @override
-  State<TravellerSelectionSheet> createState() =>
+  ConsumerState<TravellerSelectionSheet> createState() =>
       _TravellerSelectionSheetState();
 }
 
-class _TravellerSelectionSheetState extends State<TravellerSelectionSheet> {
+class _TravellerSelectionSheetState
+    extends ConsumerState<TravellerSelectionSheet> {
   int numberOfAdults = 1;
   bool hasChildren = false;
   int numberOfChildren = 0;
@@ -88,8 +91,11 @@ class _TravellerSelectionSheetState extends State<TravellerSelectionSheet> {
               setState(() {
                 numberOfAdults = value;
               });
+              ref
+                  .read(bookingProvider.notifier)
+                  .updateTravelers(adults: value.toString());
             },
-            fontSize: hasChildren ? 80 : 120,
+            fontSize: hasChildren ? 100 : 150,
           ),
 
           const SizedBox(height: 20),
@@ -133,13 +139,16 @@ class _TravellerSelectionSheetState extends State<TravellerSelectionSheet> {
                 setState(() {
                   numberOfChildren = value;
                 });
+                ref
+                    .read(bookingProvider.notifier)
+                    .updateTravelers(children: value.toString());
               },
-              fontSize: 80,
+              fontSize: 100,
             ),
           ],
 
           const Spacer(),
-          Text(
+          const Text(
             'Total: 0.6 BTC',
             style: TextStyle(
               fontSize: 24,
@@ -158,7 +167,7 @@ class _TravellerSelectionSheetState extends State<TravellerSelectionSheet> {
             },
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.zero,
-              backgroundColor: Colors.blue,
+              backgroundColor: Appcolor.secondary,
               minimumSize: const Size(double.infinity, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),

@@ -2,48 +2,64 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:trip_show_planner/core/config/theme/appColor.dart';
 
-class Calender extends StatelessWidget {
-  final void Function(DateRangePickerSelectionChangedArgs)? funct;
-  const Calender({super.key, required this.funct});
+class Calendar extends StatelessWidget {
+  final void Function(DateRangePickerSelectionChangedArgs)? onSelectionChanged;
+
+  const Calendar({
+    super.key,
+    required this.onSelectionChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Set minimum date to tomorrow
     final DateTime today = DateTime.now();
     final DateTime tomorrow = DateTime(today.year, today.month, today.day + 1);
-
-    final _datetimeController = DateRangePickerController();
-    var theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return SfDateRangePicker(
-      controller: _datetimeController,
       view: DateRangePickerView.month,
       headerStyle: DateRangePickerHeaderStyle(
         backgroundColor: Appcolor.primary,
         textAlign: TextAlign.center,
-        textStyle: theme.textTheme.titleMedium,
+        textStyle: theme.textTheme.titleMedium?.copyWith(
+          color: Colors.white,
+        ),
       ),
       backgroundColor: Appcolor.secondary,
-      enablePastDates: true,
-      minDate: tomorrow, // Set minimum date to tomorrow
+      enablePastDates: false,
+      minDate: tomorrow,
       monthCellStyle: const DateRangePickerMonthCellStyle(
         textStyle: TextStyle(
           color: Colors.white,
           fontFamily: "bold",
           fontSize: 14,
         ),
-        leadingDatesTextStyle:
-            TextStyle(color: Colors.white, backgroundColor: Colors.white),
-        trailingDatesTextStyle: TextStyle(
+        disabledDatesTextStyle: TextStyle(
           color: Color(0xFFC8C9CC),
-          backgroundColor: Colors.white,
           fontFamily: "bold",
-          fontSize: 15,
+          fontSize: 14,
+        ),
+        blackoutDateTextStyle: TextStyle(
+          color: Colors.red,
+          fontFamily: "bold",
+          fontSize: 14,
+        ),
+        weekendTextStyle: TextStyle(
+          color: Colors.white,
+          fontFamily: "bold",
+          fontSize: 14,
         ),
         todayTextStyle: TextStyle(
           color: Colors.white,
           fontFamily: "bold",
-          fontSize: 15,
+          fontSize: 14,
+        ),
+      ),
+      yearCellStyle: const DateRangePickerYearCellStyle(
+        textStyle: TextStyle(
+          color: Colors.white,
+          fontFamily: "bold",
+          fontSize: 14,
         ),
       ),
       selectionMode: DateRangePickerSelectionMode.range,
@@ -52,7 +68,7 @@ class Calender extends StatelessWidget {
         fontFamily: "bold",
         fontSize: 14,
       ),
-      selectionColor: Colors.black,
+      selectionColor: Appcolor.primary,
       startRangeSelectionColor: Appcolor.primary,
       endRangeSelectionColor: Appcolor.primary,
       rangeSelectionColor: Appcolor.Range_color,
@@ -61,7 +77,17 @@ class Calender extends StatelessWidget {
         fontFamily: "bold",
         fontSize: 14,
       ),
-      onSelectionChanged: funct,
+      onSelectionChanged: onSelectionChanged,
+      monthViewSettings: const DateRangePickerMonthViewSettings(
+        firstDayOfWeek: 1,
+        viewHeaderStyle: DateRangePickerViewHeaderStyle(
+          textStyle: TextStyle(
+            color: Colors.white,
+            fontFamily: "bold",
+            fontSize: 14,
+          ),
+        ),
+      ),
     );
   }
 }

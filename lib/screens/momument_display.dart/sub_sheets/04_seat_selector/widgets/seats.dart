@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:trip_show_planner/provider/booking_provider.dart';
 
-class TheaterSeating extends StatefulWidget {
+class TheaterSeating extends ConsumerStatefulWidget {
   const TheaterSeating({super.key});
 
   @override
-  State<TheaterSeating> createState() => _TheaterSeatingState();
+  ConsumerState<TheaterSeating> createState() => _TheaterSeatingState();
 }
 
-class _TheaterSeatingState extends State<TheaterSeating> {
+class _TheaterSeatingState extends ConsumerState<TheaterSeating> {
   // Set to store selected seats
   final Set<String> selectedSeats = {};
-  
+
   // Predefined set of booked seats
   final Set<String> bookedSeats = {'D1', 'D2', 'A6', 'A7'};
-  
+
   // Predefined set of disabled seats
-  final Set<String> disabledSeats = {
-    'F1', 'F2', 'F3', 'F4',
-    'E1', 'E2'
-  };
+  final Set<String> disabledSeats = {'F1', 'F2', 'F3', 'F4', 'E1', 'E2'};
 
   // Generate seat ID
   String getSeatId(int row, int col) {
@@ -35,20 +34,33 @@ class _TheaterSeatingState extends State<TheaterSeating> {
   }
 
   // Handle seat selection
-  void onSeatTap(String seatId) {
+  void onSeatTap(String seatId, int seatLimit, WidgetRef ref) {
     if (bookedSeats.contains(seatId) || disabledSeats.contains(seatId)) return;
-    
+
     setState(() {
       if (selectedSeats.contains(seatId)) {
         selectedSeats.remove(seatId);
-      } else {
+      } else if (selectedSeats.length < seatLimit) {
         selectedSeats.add(seatId);
       }
+
+      // Convert selectedSeats to a comma-separated string
+      String selectedSeatsString = selectedSeats.join(',');
+
+      // Update the provider with the selected seats string
+      ref
+          .read(bookingProvider.notifier)
+          .updateSeatSelection(selectedSeatsString);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    // Watch the bookingProvider to get the seat limit
+    final limit = ref.watch(bookingProvider);
+    final seatLimit = (int.parse(limit.numberOfAdult ?? '1') +
+        int.parse(limit.numberOfChild ?? '0'));
+
     return Column(
       children: [
         // Theater curve SVG
@@ -61,7 +73,7 @@ class _TheaterSeatingState extends State<TheaterSeating> {
             fit: BoxFit.contain,
           ),
         ),
-        
+
         // Seats layout
         Container(
           padding: const EdgeInsets.all(16),
@@ -74,9 +86,9 @@ class _TheaterSeatingState extends State<TheaterSeating> {
                   children: List.generate(10, (col) {
                     final seatId = getSeatId(row, col);
                     final status = getSeatStatus(seatId);
-                    
+
                     return GestureDetector(
-                      onTap: () => onSeatTap(seatId),
+                      onTap: () => onSeatTap(seatId, seatLimit, ref),
                       child: Container(
                         width: 30,
                         height: 30,
@@ -93,7 +105,7 @@ class _TheaterSeatingState extends State<TheaterSeating> {
             }),
           ),
         ),
-        
+
         // Legend
         Padding(
           padding: const EdgeInsets.all(16),
